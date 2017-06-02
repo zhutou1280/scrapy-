@@ -21,8 +21,13 @@ class IntuPipeline(object):
       # 处理item的类，自动调用的
     def process_item(self, item, spider):
         line=json.dumps(dict(item))+'\n'
-        self.file.write(line)
-        return item
+        try:
+          
+            self.file.write(line)
+        except AttributeError:
+            pass                          #try for the error'none object have the attribution encoding'
+        finally:
+            return item
 
         # 关闭文件的类
     def spider_closed(self,spider):
