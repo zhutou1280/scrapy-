@@ -15,17 +15,16 @@ import json                      #json格式数据模块
 # 其存储了所有的url和title
 class IntuPipeline(object):
     '''创建json格式的文件存储'''
-    def __init__(self):                      #类初始化，创建并写入文件
+    def __init__(self):                      #类初始化，创建并写入文件  
         self.file=codecs.open('info.json','w',encoding='utf-8')   
       
       # 处理item的类，自动调用的
     def process_item(self, item, spider):
         line=json.dumps(dict(item))+'\n'
         try:
-          
             self.file.write(line)
         except AttributeError:
-            pass                          #try for the error'none object have the attribution encoding'
+            pass
         finally:
             return item
 
@@ -42,7 +41,7 @@ class IntuScrapyPipeline(object):
         port=3306,
         db='mytable',
         user='root',                                    #账户名：root用户
-        password='xxxxxxxxxxxxx',        #密码：你必须改成root用户的密码，跟账户对应
+        password='123456',        #密码：你必须改成root用户的密码，跟账户对应
         cursorclass=pymysql.cursors.DictCursor,
         charset='utf8mb4')
 
@@ -52,11 +51,12 @@ class IntuScrapyPipeline(object):
         query.addErrback(self._handle_error,item,spider)
         return item
 
-#写如数据库的函数
+#写如数据库的函数s
     def _conditional_insert(self,tx,item):
         sql="insert into Intutable(title,url) values(%s,%s)" #要写入的mysql语句
         params=(item['title'],item['url'])
-        tx.execute(sql,params)                    #执行写入
+        tx.execute(sql,params)
+                       #执行写入
     
     # 异常处理类
     def _handle_error(self,failure,item,spider):
